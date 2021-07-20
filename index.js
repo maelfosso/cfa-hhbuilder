@@ -34,7 +34,7 @@ const eventAggregator = (() => {
     let event = events.filter((event) => {
       return event.name == eventName;
     })[0];
-
+    
     if (!event) {
       event = new Event(eventName);
       events.push(event);
@@ -61,7 +61,7 @@ const eventAggregator = (() => {
 })();
 
 
-class Person {
+class HouseholdItem {
   constructor(age, relationship, smoker) {
     this.age = age;
     this.relationship = relationship;
@@ -69,7 +69,28 @@ class Person {
   }
 }
 
-const addPersonForm = (() => {
+const listHousehold = (() => {
+
+  const addedHouseholdItem = function (item) {
+    console.log('addedHouseholdItem ', item);
+  }
+
+  const init = () => {
+    eventAggregator.subscribe('household.item.added', addedHouseholdItem);
+  }
+
+  return {
+    init
+  }
+
+})();
+
+const addHouseholdItemForm = (() => {
+
+  const clear = () => {
+    console.log('reset form');
+  }
+
   const listener = () => {
     document.querySelector('form').addEventListener('submit', function(e) {
       e.preventDefault();
@@ -79,6 +100,11 @@ const addPersonForm = (() => {
     document.querySelector('button.add').addEventListener('click', function(e) {
       e.preventDefault();
       console.log('Button add ', e);
+
+      const item = new HouseholdItem();
+      eventAggregator.publish('household.item.added', item);
+
+      clear();
     })
   }
 
@@ -92,7 +118,8 @@ const addPersonForm = (() => {
 })();
 
 const init = () => {
-  addPersonForm.init();
+  listHousehold.init();
+  addHouseholdItemForm.init();
 }
 
 init();
