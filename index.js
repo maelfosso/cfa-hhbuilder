@@ -142,6 +142,8 @@ const listHousehold = (() => {
 
 const addHouseholdItemForm = (() => {
 
+  const householdForm = document.querySelector('form');
+
   const clear = () => {
     console.log('reset form');
     document.getElementById('age').value = '';
@@ -149,8 +151,30 @@ const addHouseholdItemForm = (() => {
     document.getElementById('smoker').checked = false;
   }
 
+  const cleanError = () => document.querySelector('div#error')?.remove();
+
+  const displayError = (err) => {
+    cleanError();
+
+    const divError = document.createElement('div');
+    divError.id = 'error';
+    divError.textContent = err;
+    divError.style.padding = '1em';
+    divError.style.marginBottom = '0.5em';
+    divError.style.backgroundColor = 'red';
+
+    householdForm.insertBefore(
+      divError,
+      householdForm.firstChild
+    );
+  }
+
   const listener = () => {
-    document.querySelector('form').addEventListener('submit', function(e) {
+    document.getElementById('age').addEventListener('change', e => cleanError());
+
+    document.querySelector('#rel').addEventListener('change', e => cleanError());
+
+    householdForm.addEventListener('submit', function(e) {
       e.preventDefault();
       console.log('Form submission ', e);
 
@@ -161,9 +185,19 @@ const addHouseholdItemForm = (() => {
     document.querySelector('button.add').addEventListener('click', function(e) {
       e.preventDefault();
 
-      const age = +document.getElementById('age').value;
+      const age = +document.getElementById('age').value; // parseInt
       const relationship = document.getElementById('rel').value;
       const smoker = document.getElementById('smoker').checked;
+
+      if (age === undefined || age <= 0) {
+        displayError('Age must be higher than 0');
+        return false;
+      }
+
+      if (!relationship) {
+        displayError('Relationship must be selected');
+        return false;
+      }
 
       const item = new HouseholdItem(age, relationship, smoker);
       eventAggregator.publish('household.item.added', item);
