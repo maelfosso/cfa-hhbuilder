@@ -74,15 +74,34 @@ const listHousehold = (() => {
   const household = [];
   const ol = document.querySelector('ol.household');
 
+  const createSpan = (text) => {
+    const span = document.createElement('span');
+    span.textContent = `${text} `;
+    return span;
+  }
+
   const addedHouseholdItem = (item) => {
     console.log('addedHouseholdItem ', item);
     household.push(item);
 
     const li = document.createElement('li');
-    li.appendChild(document.createTextNode(item.age));
-    li.appendChild(document.createTextNode(item.relationship))
-    li.appendChild(document.createTextNode(item.smoker));
+    const div = document.createElement('div');
+    const divInfo = document.createElement('div');
+    divInfo.appendChild(createSpan(item.age));
+    divInfo.appendChild(createSpan(item.relationship))
+    divInfo.appendChild(createSpan(item.smoker));
 
+    const divActions = document.createElement('div');
+    const removeButton = document.createElement('button');
+    removeButton.id = `household-${household.length}`;
+    removeButton.type = 'button';
+    removeButton.textContent = 'Remove';
+    divActions.appendChild(removeButton);
+
+    div.appendChild(divInfo);
+    div.appendChild(divActions);
+    
+    li.appendChild(div);
     ol.appendChild(li);
   }
 
