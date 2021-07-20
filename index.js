@@ -71,8 +71,19 @@ class HouseholdItem {
 
 const listHousehold = (() => {
 
-  const addedHouseholdItem = function (item) {
+  const household = [];
+  const ol = document.querySelector('ol.household');
+
+  const addedHouseholdItem = (item) => {
     console.log('addedHouseholdItem ', item);
+    household.push(item);
+
+    const li = document.createElement('li');
+    li.appendChild(document.createTextNode(item.age));
+    li.appendChild(document.createTextNode(item.relationship))
+    li.appendChild(document.createTextNode(item.smoker));
+
+    ol.appendChild(li);
   }
 
   const init = () => {
@@ -89,19 +100,28 @@ const addHouseholdItemForm = (() => {
 
   const clear = () => {
     console.log('reset form');
+    document.getElementById('age').value = '';
+    document.getElementById('rel').value = '';
+    document.getElementById('smoker').checked = false;
   }
 
   const listener = () => {
     document.querySelector('form').addEventListener('submit', function(e) {
       e.preventDefault();
       console.log('Form submission ', e);
+
+      this.reset();
+      clear();
     });
 
     document.querySelector('button.add').addEventListener('click', function(e) {
       e.preventDefault();
-      console.log('Button add ', e);
 
-      const item = new HouseholdItem();
+      const age = +document.getElementById('age').value;
+      const relationship = document.getElementById('rel').value;
+      const smoker = document.getElementById('smoker').checked;
+
+      const item = new HouseholdItem(age, relationship, smoker);
       eventAggregator.publish('household.item.added', item);
 
       clear();
