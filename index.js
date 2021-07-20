@@ -80,9 +80,25 @@ const listHousehold = (() => {
     return span;
   }
 
-  const addedHouseholdItem = (item) => {
-    console.log('addedHouseholdItem ', item);
-    household.push(item);
+  const removeItem = (e, id) => {
+    e.preventDefault();
+
+    household.splice(id, 1);
+    displayAllItems();
+  }
+
+  const displayAllItems = () => {
+    while (ol.hasChildNodes()) {
+      ol.removeChild(ol.lastChild);
+    }
+
+    for (let i=0; i < household.length; i++) {
+      displayItem(i);
+    }
+  }
+
+  const displayItem = (i) => {
+    const item = household[i];
 
     const li = document.createElement('li');
     const div = document.createElement('div');
@@ -93,9 +109,11 @@ const listHousehold = (() => {
 
     const divActions = document.createElement('div');
     const removeButton = document.createElement('button');
-    removeButton.id = `household-${household.length}`;
+    removeButton.id = `household-${i}`;
     removeButton.type = 'button';
     removeButton.textContent = 'Remove';
+    removeButton.addEventListener('click', e => removeItem(e, i));
+
     divActions.appendChild(removeButton);
 
     div.appendChild(divInfo);
@@ -103,6 +121,13 @@ const listHousehold = (() => {
     
     li.appendChild(div);
     ol.appendChild(li);
+  }
+
+  const addedHouseholdItem = (item) => {
+    console.log('addedHouseholdItem ', item);
+    household.push(item);
+
+    displayAllItems();
   }
 
   const init = () => {
