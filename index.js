@@ -165,13 +165,6 @@ const addHouseholdItemForm = (() => {
 
   const householdForm = document.querySelector('form');
 
-  const clear = () => {
-    console.log('reset form');
-    document.getElementById('age').value = '';
-    document.getElementById('rel').value = '';
-    document.getElementById('smoker').checked = false;
-  }
-
   const cleanError = () => {
     console.log('cleanError');
     document.querySelector('div#error')?.remove();
@@ -208,7 +201,6 @@ const addHouseholdItemForm = (() => {
       console.log('Form submission ', e);
 
       this.reset();
-      clear();
     });
 
     document.querySelector('button.add').addEventListener('click', function(e) {
