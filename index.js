@@ -71,7 +71,6 @@ class HouseholdItem {
 
 const listHousehold = (() => {
 
-  const household = [];
   const ol = document.querySelector('ol.household');
 
   const createSpan = (text) => {
@@ -170,10 +169,6 @@ const addHouseholdItemForm = (() => {
     );
   }
 
-  const editHouseholdItem = (id, item) => {
-    console.log('editHouseholdItem ', id, item);
-  }
-
   const handle = () => {
     document.getElementById('age').addEventListener('input', e => cleanError());
 
@@ -182,6 +177,11 @@ const addHouseholdItemForm = (() => {
     householdForm.addEventListener('submit', function(e) {
       e.preventDefault();
       console.log('Form submission ', e);
+
+      const preDebug = document.querySelector('pre.debug')
+      preDebug.textContent = JSON.stringify(household);
+      preDebug.style.display = 'block';
+      preDebug.style.width = 'fit-content';
 
       this.reset();
     });
