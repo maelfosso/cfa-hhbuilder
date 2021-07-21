@@ -87,6 +87,7 @@ const listHousehold = (() => {
 
   const editItem = (id) => {
     console.log('editItem ', id);
+    eventAggregator.publish('household.item.edit', id, household[id]);
   }
 
   const createRemoveButton = (i) => {
@@ -186,7 +187,11 @@ const addHouseholdItemForm = (() => {
     );
   }
 
-  const listener = () => {
+  const editHouseholdItem = (id, item) => {
+    console.log('editHouseholdItem ', id, item);
+  }
+
+  const handle = () => {
     document.getElementById('age').addEventListener('input', e => cleanError());
 
     document.getElementById('rel').addEventListener('change', e => cleanError());
@@ -220,11 +225,12 @@ const addHouseholdItemForm = (() => {
       eventAggregator.publish('household.item.added', item);
 
       householdForm.reset();
-    })
+    });
   }
 
   const init = () => {
-    listener();
+    eventAggregator.subscribe('household.item.edit', editHouseholdItem);
+    handle();
   }
 
   return {
