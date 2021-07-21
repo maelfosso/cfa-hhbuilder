@@ -144,13 +144,6 @@ const addHouseholdItemForm = (() => {
 
   const householdForm = document.querySelector('form');
 
-  const clear = () => {
-    console.log('reset form');
-    document.getElementById('age').value = '';
-    document.getElementById('rel').value = '';
-    document.getElementById('smoker').checked = false;
-  }
-
   const cleanError = () => {
     console.log('cleanError');
     document.querySelector('div#error')?.remove();
@@ -205,7 +198,7 @@ const addHouseholdItemForm = (() => {
       const item = new HouseholdItem(age, relationship, smoker);
       eventAggregator.publish('household.item.added', item);
 
-      clear();
+      householdForm.reset();
     })
   }
 
