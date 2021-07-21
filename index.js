@@ -151,7 +151,10 @@ const addHouseholdItemForm = (() => {
     document.getElementById('smoker').checked = false;
   }
 
-  const cleanError = () => document.querySelector('div#error')?.remove();
+  const cleanError = () => {
+    console.log('cleanError');
+    document.querySelector('div#error')?.remove();
+  }
 
   const displayError = (err) => {
     cleanError();
@@ -170,9 +173,9 @@ const addHouseholdItemForm = (() => {
   }
 
   const listener = () => {
-    document.getElementById('age').addEventListener('change', e => cleanError());
+    document.getElementById('age').addEventListener('input', e => cleanError());
 
-    document.querySelector('#rel').addEventListener('change', e => cleanError());
+    document.getElementById('rel').addEventListener('change', e => cleanError());
 
     householdForm.addEventListener('submit', function(e) {
       e.preventDefault();
