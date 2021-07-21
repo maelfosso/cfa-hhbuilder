@@ -85,11 +85,6 @@ const listHousehold = (() => {
     displayAllItems();
   }
 
-  const editItem = (id) => {
-    console.log('editItem ', id);
-    eventAggregator.publish('household.item.edit', id, household[id]);
-  }
-
   const createRemoveButton = (i) => {
     const removeButton = document.createElement('button');
     removeButton.id = `household-${i}`;
@@ -98,16 +93,6 @@ const listHousehold = (() => {
     removeButton.addEventListener('click', e => removeItem(i));
 
     return removeButton;
-  }
-
-  const createEditButton = (i) => {
-    const editButton = document.createElement('button');
-    editButton.id = `household-${i}`;
-    editButton.type = 'button';
-    editButton.textContent = 'Edit';
-    editButton.addEventListener('click', e => editItem(i));
-
-    return editButton;
   }
 
   const displayAllItems = () => {
@@ -132,10 +117,8 @@ const listHousehold = (() => {
 
     const divActions = document.createElement('div');
     const removeButton = createRemoveButton(i);
-    const editButton = createEditButton(i);    
 
     divActions.appendChild(removeButton);
-    divActions.appendChild(editButton);
 
     div.appendChild(divInfo);
     div.appendChild(divActions);
@@ -228,7 +211,6 @@ const addHouseholdItemForm = (() => {
   }
 
   const init = () => {
-    eventAggregator.subscribe('household.item.edit', editHouseholdItem);
     handle();
   }
 
