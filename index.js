@@ -80,11 +80,33 @@ const listHousehold = (() => {
     return span;
   }
 
-  const removeItem = (e, id) => {
-    e.preventDefault();
-
+  const removeItem = (id) => {
     household.splice(id, 1);
     displayAllItems();
+  }
+
+  const editItem = (id) => {
+    console.log('editItem ', id);
+  }
+
+  const createRemoveButton = (i) => {
+    const removeButton = document.createElement('button');
+    removeButton.id = `household-${i}`;
+    removeButton.type = 'button';
+    removeButton.textContent = 'Remove';
+    removeButton.addEventListener('click', e => removeItem(i));
+
+    return removeButton;
+  }
+
+  const createEditButton = (i) => {
+    const editButton = document.createElement('button');
+    editButton.id = `household-${i}`;
+    editButton.type = 'button';
+    editButton.textContent = 'Edit';
+    editButton.addEventListener('click', e => editItem(i));
+
+    return editButton;
   }
 
   const displayAllItems = () => {
@@ -105,16 +127,14 @@ const listHousehold = (() => {
     const divInfo = document.createElement('div');
     divInfo.appendChild(createSpan(item.age));
     divInfo.appendChild(createSpan(item.relationship))
-    divInfo.appendChild(createSpan(item.smoker));
+    divInfo.appendChild(createSpan(item.smoker ? 'Smoker' : 'Not smoker'));
 
     const divActions = document.createElement('div');
-    const removeButton = document.createElement('button');
-    removeButton.id = `household-${i}`;
-    removeButton.type = 'button';
-    removeButton.textContent = 'Remove';
-    removeButton.addEventListener('click', e => removeItem(e, i));
+    const removeButton = createRemoveButton(i);
+    const editButton = createEditButton(i);    
 
     divActions.appendChild(removeButton);
+    divActions.appendChild(editButton);
 
     div.appendChild(divInfo);
     div.appendChild(divActions);
@@ -158,6 +178,7 @@ const addHouseholdItemForm = (() => {
     divError.style.padding = '1em';
     divError.style.marginBottom = '0.5em';
     divError.style.backgroundColor = 'red';
+    divError.style.width = 'fit-content';
 
     householdForm.insertBefore(
       divError,
